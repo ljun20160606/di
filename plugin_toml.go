@@ -1,9 +1,8 @@
 package di
 
 import (
-	"io"
-
 	"github.com/pelletier/go-toml"
+	"io"
 	"sync"
 )
 

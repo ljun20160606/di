@@ -1,11 +1,10 @@
 package di
 
 import (
-	"reflect"
-	"sort"
-
 	"fmt"
 	"github.com/ljun20160606/go-lib/reflectl"
+	"reflect"
+	"sort"
 )
 
 func NewContainer() Container {
@@ -24,7 +23,7 @@ type (
 		// 放入iceMap, 根据插件来注入
 		PutIce(ice Ice)
 
-		// 放入cupMap，water名字由容器的默认规则来决定
+		// 放入cupMap，water名字由容器的默认规则来决定, water必须是指针类型
 		Put(water Water)
 
 		// 放入cupMap，water名字自定义
@@ -74,6 +73,14 @@ func (c *container) PutIce(ice Ice) {
 	c.iceMap[prefix] = append(c.iceMap[prefix], ice)
 }
 
+func (c *container) Put(water Water) {
+	c.putWater(water, "")
+}
+
+func (c *container) PutWithName(water Water, name string) {
+	c.putWater(water, name)
+}
+
 func (c *container) putWater(water Water, name string) {
 	v := reflect.ValueOf(water)
 	t := v.Type()
@@ -91,14 +98,6 @@ func (c *container) putWater(water Water, name string) {
 		cup := newCup(water, t, v, c)
 		c.cupMap[name] = append(c.cupMap[name], cup)
 	}
-}
-
-func (c *container) Put(water Water) {
-	c.putWater(water, "")
-}
-
-func (c *container) PutWithName(water Water, name string) {
-	c.putWater(water, name)
 }
 
 func (c *container) GetWaterWithName(name string) Water {
@@ -172,6 +171,14 @@ func (c *container) EachCup(cupFunc CupFunc) {
 	}
 }
 
+func (c *container) Start() {
+	c.injectDependency()
+	c.loadPlugins(BeforeInit)
+	c.lifeCycle(TheInit)
+	c.loadPlugins(BeforeReady)
+	c.lifeCycle(TheReady)
+}
+
 func (c *container) injectDependency() {
 	c.EachCup(func(name string, cup *Cup) bool {
 		cup.injectDependency()
@@ -196,26 +203,10 @@ func (c *container) loadPlugins(lifecycle Lifecycle) {
 	}
 }
 
-func (c *container) Start() {
-	c.injectDependency()
-	c.loadPlugins(BeforeInit)
-	c.init()
-	c.loadPlugins(BeforeReady)
-	c.ready()
-}
-
-func (c *container) init() {
+func (c *container) lifeCycle(l Lifecycle) {
 	set := make(CupSet)
 	c.EachCup(func(name string, cup *Cup) bool {
-		cup.init(set)
-		return false
-	})
-}
-
-func (c *container) ready() {
-	set := make(CupSet)
-	c.EachCup(func(name string, cup *Cup) bool {
-		cup.ready(set)
+		cup.lifeCycle(set, l.Type())
 		return false
 	})
 }

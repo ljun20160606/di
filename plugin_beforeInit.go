@@ -3,19 +3,10 @@ package di
 import (
 	"github.com/ljun20160606/go-lib/reflectl"
 	"reflect"
-	"sync"
 )
 
-var onceBefore = sync.Once{}
-
 func init() {
-	LoadBeforeInitPlugin()
-}
-
-func LoadBeforeInitPlugin() {
-	onceBefore.Do(func() {
-		RegisterPlugin(BeforeInit, new(BeforeInitPlugin))
-	})
+	RegisterPlugin(BeforeInit, new(BeforeInitPlugin))
 }
 
 var (

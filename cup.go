@@ -10,36 +10,36 @@ type (
 	CupSet  map[*Cup]struct{}
 
 	Cup struct {
-		Water      Water
-		Class      reflect.Type  // classInfo.kind() Ptr
-		Value      reflect.Value // Lookup.kind() Ptr
-		Container  Container
-		Dependents []*Cup
+		Water        Water
+		Class        reflect.Type  // classInfo.kind() Ptr
+		Value        reflect.Value // Lookup.kind() Ptr
+		Container    Container
+		Dependencies []*Cup
 	}
 )
 
 func newCup(water Water, typee reflect.Type, value reflect.Value, container *container) *Cup {
 	return &Cup{
-		Water:      water,
-		Class:      typee,
-		Value:      value,
-		Container:  container,
-		Dependents: []*Cup{},
+		Water:        water,
+		Class:        typee,
+		Value:        value,
+		Container:    container,
+		Dependencies: []*Cup{},
 	}
 }
 
 func (c *Cup) injectDependency() {
 	classElem := c.Class.Elem()
 	valueElem := c.Value.Elem()
-	// mustBe(Struct)
+	// mustBe(struct)
 	if classElem.Kind() != reflect.Struct {
 		return
 	}
 	for num := valueElem.NumField() - 1; num >= 0; num-- {
 		classInfo := classElem.Field(num)
 		value := valueElem.Field(num)
-		tag, ok := classInfo.Tag.Lookup("di")
-		if !ok || tag == "-" {
+		tag, ok := classInfo.Tag.Lookup(DI)
+		if !ok || tag == Ignore {
 			continue
 		}
 		if !value.CanSet() {
@@ -63,33 +63,21 @@ func (c *Cup) injectDependency() {
 			}
 			cup = otherCup
 		}
-		c.Dependents = append(c.Dependents, cup)
+		c.Dependencies = append(c.Dependencies, cup)
 		value.Set(cup.Value)
 	}
 }
 
-func (c *Cup) init(set CupSet) {
+// 传入接口类型，并根据接口调用
+func (c *Cup) lifeCycle(set CupSet, t reflect.Type) {
 	if _, has := set[c]; has {
 		return
 	}
 	set[c] = struct{}{}
-	for _, dependence := range c.Dependents {
-		dependence.init(set)
+	for _, dependency := range c.Dependencies {
+		dependency.lifeCycle(set, t)
 	}
-	if init, ok := c.Water.(Init); ok {
-		init.Init()
-	}
-}
-
-func (c *Cup) ready(set CupSet) {
-	if _, has := set[c]; has {
-		return
-	}
-	set[c] = struct{}{}
-	for _, dependence := range c.Dependents {
-		dependence.ready(set)
-	}
-	if init, ok := c.Water.(Ready); ok {
-		init.Ready()
+	if c.Class.Implements(t) {
+		c.Value.MethodByName(t.Method(0).Name).Call(nil)
 	}
 }

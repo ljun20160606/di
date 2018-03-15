@@ -5,8 +5,13 @@ import (
 	"os"
 )
 
+const (
+	DI     = "di"
+	Ignore = "-"
+)
+
 var (
-	logger           = log.New(os.Stderr, "[di] ", log.Lshortfile)
+	logger           = log.New(os.Stderr, "["+DI+"] ", log.Lshortfile)
 	defaultContainer = NewContainer()
 )
 

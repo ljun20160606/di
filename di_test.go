@@ -1,6 +1,7 @@
 package di
 
 import (
+	"fmt"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -20,6 +21,10 @@ type (
 		Sex    *string  `di:"*"`
 	}
 )
+
+func (Foo) Init() {
+	fmt.Println("foo")
+}
 
 func (f *BarImpl) Values() string {
 	return f.Value
