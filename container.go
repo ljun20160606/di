@@ -92,7 +92,9 @@ func (c *container) putWater(water Water, name string) {
 	if name == "" {
 		name = reflectl.GetValueDefaultName(v)
 	}
-	logger.Output(4, fmt.Sprintf("放入 %v", name))
+	if Verbose {
+		logger.Output(4, fmt.Sprintf("放入 %v", name))
+	}
 	// 额，没想到并发的场景所以没加锁
 	if _, ok := c.cupMap[name]; !ok {
 		cup := newCup(water, t, v, c)

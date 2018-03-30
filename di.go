@@ -11,6 +11,7 @@ const (
 )
 
 var (
+	Verbose          = true
 	logger           = log.New(os.Stderr, "["+DI+"] ", log.Lshortfile)
 	defaultContainer = NewContainer()
 )
