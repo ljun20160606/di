@@ -15,7 +15,10 @@
 # Project-local glide cache, RE: https://github.com/Masterminds/glide/issues/736
 .glide/
 
-# misc
+# Vendor
+/vendor
+
+# Misc
 .idea
 *.iml
 .DS_Store
