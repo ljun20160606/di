@@ -1,7 +1,7 @@
 package di
 
 import (
-	"github.com/ljun20160606/go-lib/reflectl"
+	"github.com/ljun20160606/gox/reflectx"
 	"reflect"
 )
 
@@ -26,7 +26,7 @@ func (b *BeforeInitPlugin) Lookup(path string, ice Ice) (v interface{}) {
 		ice.Container().EachCup(func(name string, cup *Cup) bool {
 			if beforeInitType, ok := cup.Water.(BeforeInitType); ok {
 				vv := beforeInitType.BeforeInit()
-				if reflectl.TypeEqual(ice.Type(), reflect.TypeOf(vv)) {
+				if reflectx.TypeEqual(ice.Type(), reflect.TypeOf(vv)) {
 					v = vv
 					return true
 				}

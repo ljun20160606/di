@@ -2,7 +2,7 @@ package di
 
 import (
 	"fmt"
-	"github.com/ljun20160606/go-lib/reflectl"
+	"github.com/ljun20160606/gox/reflectx"
 	"reflect"
 	"sort"
 )
@@ -90,7 +90,7 @@ func (c *container) putWater(water Water, name string) {
 		panic(ErrorType.Panic(kind))
 	}
 	if name == "" {
-		name = reflectl.GetValueDefaultName(v)
+		name = reflectx.GetValueDefaultName(v)
 	}
 	if Verbose {
 		logger.Output(4, fmt.Sprintf("放入 %v", name))
@@ -117,7 +117,7 @@ func (c *container) GetWaterWithName(name string) Water {
 func (c *container) GetCupWithName(name string, t reflect.Type) (h *Cup) {
 	if cups, found := c.cupMap[name]; found {
 		for _, cup := range cups {
-			if reflectl.TypeEqual(t, cup.Class) {
+			if reflectx.TypeEqual(t, cup.Class) {
 				return cup
 			}
 		}
@@ -129,7 +129,7 @@ func (c *container) GetCup(t reflect.Type, excludedNames ...string) (h *Cup) {
 	switch len(excludedNames) {
 	case 0:
 		c.EachCup(func(name string, cup *Cup) bool {
-			if reflectl.TypeEqual(t, cup.Class) {
+			if reflectx.TypeEqual(t, cup.Class) {
 				h = cup
 				return true
 			}
@@ -138,7 +138,7 @@ func (c *container) GetCup(t reflect.Type, excludedNames ...string) (h *Cup) {
 	case 1:
 		c.EachCup(func(name string, cup *Cup) bool {
 			if name != excludedNames[0] {
-				if reflectl.TypeEqual(t, cup.Class) {
+				if reflectx.TypeEqual(t, cup.Class) {
 					h = cup
 					return true
 				}
@@ -152,7 +152,7 @@ func (c *container) GetCup(t reflect.Type, excludedNames ...string) (h *Cup) {
 		}
 		c.EachCup(func(name string, cup *Cup) bool {
 			if _, has := s[name]; !has {
-				if reflectl.TypeEqual(t, cup.Class) {
+				if reflectx.TypeEqual(t, cup.Class) {
 					h = cup
 					return true
 				}

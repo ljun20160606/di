@@ -1,7 +1,7 @@
 package di
 
 import (
-	"github.com/ljun20160606/go-lib/reflectl"
+	"github.com/ljun20160606/gox/reflectx"
 	"reflect"
 	"strings"
 )
@@ -28,14 +28,14 @@ func newDropInfo(tagDi string, class reflect.StructField) *dropInfo {
 	case dotIndex > 0: // 2.
 		si.prefix = tagDi[:dotIndex]
 		si.path = tagDi[dotIndex+1:]
-		si.name = reflectl.GetTypeDefaultName(class.Type)
+		si.name = reflectx.GetTypeDefaultName(class.Type)
 		return si
 	}
 	// 1.
 	if tagDi == "*" {
 		si.auto = true
 		si.dependent = true
-		si.name = reflectl.GetTypeDefaultName(class.Type)
+		si.name = reflectx.GetTypeDefaultName(class.Type)
 		return si
 	}
 	si.dependent = true
