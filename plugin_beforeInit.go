@@ -21,7 +21,8 @@ type (
 	}
 )
 
-func (b *BeforeInitPlugin) Lookup(path string, ice Ice) (v interface{}) {
+func (b *BeforeInitPlugin) Load(path string, ice Ice) {
+	var v interface{}
 	if path == "*" {
 		ice.Container().EachCup(func(name string, cup *Cup) bool {
 			if beforeInitType, ok := cup.Water.(BeforeInitType); ok {
@@ -36,13 +37,16 @@ func (b *BeforeInitPlugin) Lookup(path string, ice Ice) (v interface{}) {
 		if v == nil {
 			panic(ErrorMissing.Panic(b.Prefix() + "." + path))
 		}
-		return v
+
+		ice.Value().Set(reflect.ValueOf(v))
+		return
 	}
 	cup := ice.Container().GetCupWithName(path, beforeInitType)
 	if cup == nil {
 		panic(ErrorMissing.Panic(b.Prefix() + "." + path))
 	}
-	return cup.Water.(BeforeInitType).BeforeInit()
+	v = cup.Water.(BeforeInitType).BeforeInit()
+	ice.Value().Set(reflect.ValueOf(v))
 }
 
 func (b *BeforeInitPlugin) Prefix() string {

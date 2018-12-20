@@ -2,28 +2,47 @@
 
 
 [[projects]]
-  digest = "1:a2c1d0e43bd3baaa071d1b9ed72c27d78169b2b269f71c105ac4ba34b1be4a39"
+  digest = "1:9f3b30d9f8e0d7040f729b82dcbc8f0dead820a133b3147ce355fc451f32d761"
+  name = "github.com/BurntSushi/toml"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "3012a1dbe2e4bd1391d42b32f0577cb7bbc7f005"
+  version = "v0.3.1"
+
+[[projects]]
+  digest = "1:ffe9824d294da03b391f44e1ae8281281b4afc1bdaa9588c9097785e3af10cec"
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
   pruneopts = "UT"
-  revision = "346938d642f2ec3594ed81d874461961cd0faa76"
-  version = "v1.1.0"
+  revision = "8991bc29aa16c548c550c7ff78260e27b9ab7c73"
+  version = "v1.1.1"
+
+[[projects]]
+  digest = "1:c424f94be0a7513b1ee20e53347c1cc10e502affbd43ecb8db233024bd1a977b"
+  name = "github.com/ljun20160606/gox"
+  packages = [
+    "fs",
+    "reflectx",
+  ]
+  pruneopts = "UT"
+  revision = "ce6bc65ad49d7e8a51613cd66df0d0db8cf4cf1b"
+  version = "v0.1.1"
 
 [[projects]]
   branch = "master"
-  digest = "1:1c832502ef097c92d76fc29ce2f3c97e77ad6d5efc1e1691617237ded36ccc57"
-  name = "github.com/ljun20160606/go-lib"
-  packages = ["reflectl"]
-  pruneopts = "UT"
-  revision = "9198a057ad1e69b20f7a850b4985b3f9c124c82a"
-
-[[projects]]
-  digest = "1:95741de3af260a92cc5c7f3f3061e85273f5a81b5db20d4bd68da74bd521675e"
-  name = "github.com/pelletier/go-toml"
+  digest = "1:de87f2d70dde37f1f077bd31d2a7fd880adf22acab4e0df008bec6ed1e59e9b4"
+  name = "github.com/ljun20160606/jsonpath"
   packages = ["."]
   pruneopts = "UT"
-  revision = "c01d1270ff3e442a8a57cddc1c92dc1138598194"
-  version = "v1.2.0"
+  revision = "db0ab2f25522575ec96cd31671bffa49c7f322a1"
+
+[[projects]]
+  digest = "1:40e195917a951a8bf867cd05de2a46aaf1806c50cf92eebf4c16f78cd196f747"
+  name = "github.com/pkg/errors"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
+  version = "v0.8.0"
 
 [[projects]]
   digest = "1:0028cb19b2e4c3112225cd871870f2d9cf49b9b4276531f03438a88e94be86fe"
@@ -41,13 +60,25 @@
   revision = "f35b8ab0b5a2cef36673838d662e249dd9c94686"
   version = "v1.2.2"
 
+[[projects]]
+  digest = "1:4d2e5a73dc1500038e504a8d78b986630e3626dc027bc030ba5c75da257cdb96"
+  name = "gopkg.in/yaml.v2"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "51d6538a90f86fe93ac480b35f37b2be17fef232"
+  version = "v2.2.2"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
-    "github.com/ljun20160606/go-lib/reflectl",
-    "github.com/pelletier/go-toml",
+    "github.com/BurntSushi/toml",
+    "github.com/ljun20160606/gox/fs",
+    "github.com/ljun20160606/gox/reflectx",
+    "github.com/ljun20160606/jsonpath",
+    "github.com/pkg/errors",
     "github.com/stretchr/testify/assert",
+    "gopkg.in/yaml.v2",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

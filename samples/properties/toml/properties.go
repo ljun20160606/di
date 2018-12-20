@@ -10,9 +10,9 @@ type Duck struct {
 }
 
 func main() {
-	di.TomlLoad(`name = "duck"`)
-	//di.TomlLoadFile("path")
-	//di.TomlLoadReader(reader)
+	di.ConfigLoad(`name = "duck"`, di.TOML)
+	//di.ConfigLoadFile("path", di.TOML)
+	//di.ConfigLoadReader(reader, di.TOML)
 	duck := Duck{}
 	di.Put(&duck)
 	di.Start()

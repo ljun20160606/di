@@ -94,6 +94,26 @@ func TestTomlLoad(t *testing.T) {
 	ast.Equal("duck", duck.Name)
 }
 
+func TestYamlLoad(t *testing.T) {
+	reset()
+
+	type Duck struct {
+		Name string `di:"#.name"`
+	}
+
+	ast := assert.New(t)
+
+	ast.NoError(ConfigLoad(`name: duck`, YAML))
+
+	duck := Duck{}
+
+	Put(&duck)
+
+	Start()
+
+	ast.Equal("duck", duck.Name)
+}
+
 type Sex struct {
 }
 

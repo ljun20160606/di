@@ -147,11 +147,9 @@ func main() {
 
 ### 加载配置
 
-`toml`插件的关键字为`#`，可以自定义插件详细看文件[plugin_toml.go](plugin_toml.go)
+`config`插件的关键字为`#`，可以自定义插件详细看文件[plugin_config.go](plugin_config.go),共支持`di.JSON` | `di.YAML` | `di.TOML`
 
 ```go
-package main
-
 import (
 	"fmt"
 	"github.com/ljun20160606/di"
@@ -162,9 +160,9 @@ type Duck struct {
 }
 
 func main() {
-	di.TomlLoad(`name = "duck"`)
-	//di.TomlLoadFile("path")
-	//di.TomlLoadReader(reader)
+	di.ConfigLoad(`name: duck`, di.YAML)
+	//di.ConfigLoadFile("path", di.YAML)
+	//di.ConfigLoadReader(reader, di.YAML)
 	duck := Duck{}
 	di.Put(&duck)
 	di.Start()

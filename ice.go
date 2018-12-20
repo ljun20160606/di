@@ -25,7 +25,7 @@ type (
 )
 
 func (s *ice) LoadPlugin(p Plugin) {
-	s.value.Set(reflect.ValueOf(p.Lookup(s.dropInfo.path, s)))
+	p.Load(s.dropInfo.path, s)
 }
 
 func (s *ice) Container() Container {

@@ -2,7 +2,7 @@ package di
 
 type (
 	Plugin interface {
-		Lookup(path string, ice Ice) interface{}
+		Load(path string, ice Ice)
 		Prefix() string
 		Priority() int
 	}
