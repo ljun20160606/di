@@ -3,20 +3,25 @@ package di
 import (
 	"fmt"
 	"github.com/ljun20160606/gox/reflectx"
+	"log"
 	"reflect"
 	"sort"
 )
 
-func NewContainer() Container {
-	return &container{
+func NewContainer(configurators ...Configurator) Container {
+	c := &container{
 		cupMap:  make(map[string][]*Cup),
 		iceMap:  make(map[string][]Ice),
 		plugins: make(map[Lifecycle]Plugins),
 	}
+	return c.Configure(configurators...)
 }
 
 type (
 	Container interface {
+		// 装载配置
+		Configure(configurators ...Configurator) Container
+
 		// 注册插件 根据lifecycle决定在哪一层被初始化
 		RegisterPlugin(lifecycle Lifecycle, p Plugin)
 
@@ -46,6 +51,12 @@ type (
 	}
 
 	container struct {
+		// 是否输出日志
+		verbose bool
+
+		// 日志
+		logger *log.Logger
+
 		// 存放 water
 		cupMap map[string][]*Cup
 
@@ -56,6 +67,14 @@ type (
 		plugins map[Lifecycle]Plugins
 	}
 )
+
+func (c *container) Configure(configurators ...Configurator) Container {
+	for _, cfg := range configurators {
+		cfg(c)
+	}
+
+	return c
+}
 
 func (c *container) RegisterPlugin(lifecycle Lifecycle, p Plugin) {
 	if _, ok := c.plugins[lifecycle]; !ok {
@@ -92,8 +111,8 @@ func (c *container) putWater(water Water, name string) {
 	if name == "" {
 		name = reflectx.GetValueDefaultName(v)
 	}
-	if Verbose {
-		logger.Output(4, fmt.Sprintf("放入 %v", name))
+	if c.verbose {
+		_ = c.logger.Output(4, fmt.Sprintf("放入 %v", name))
 	}
 	// 额，没想到并发的场景所以没加锁
 	if _, ok := c.cupMap[name]; !ok {

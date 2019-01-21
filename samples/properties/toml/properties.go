@@ -10,7 +10,7 @@ type Duck struct {
 }
 
 func main() {
-	di.ConfigLoad(`name = "duck"`, di.TOML)
+	_ = di.ConfigLoad(`name = "duck"`, di.TOML)
 	//di.ConfigLoadFile("path", di.TOML)
 	//di.ConfigLoadReader(reader, di.TOML)
 	duck := Duck{}

@@ -11,9 +11,9 @@ const (
 )
 
 var (
-	Verbose          = true
-	logger           = log.New(os.Stderr, "["+DI+"] ", log.Lshortfile)
-	defaultContainer = NewContainer()
+	loggerConfiguration        = WithLogger(log.New(os.Stderr, "["+DI+"] ", log.Lshortfile))
+	loggerVerboseConfiguration = WithLoggerVerbose(false)
+	defaultContainer           = NewContainer(loggerConfiguration, loggerVerboseConfiguration)
 )
 
 func Put(water Water) {
@@ -30,6 +30,10 @@ func GetWithName(name string) Water {
 
 func RegisterPlugin(lifecycle Lifecycle, p Plugin) {
 	defaultContainer.RegisterPlugin(lifecycle, p)
+}
+
+func Configure(configurators ...Configurator) Container {
+	return defaultContainer.Configure(configurators...)
 }
 
 func Start() {

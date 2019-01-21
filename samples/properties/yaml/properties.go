@@ -10,7 +10,7 @@ type Duck struct {
 }
 
 func main() {
-	di.ConfigLoad(`name: duck`, di.YAML)
+	_ = di.ConfigLoad(`name: duck`, di.YAML)
 	//di.ConfigLoadFile("path", di.YAML)
 	//di.ConfigLoadReader(reader, di.YAML)
 	duck := Duck{}

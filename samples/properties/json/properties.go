@@ -10,7 +10,7 @@ type Duck struct {
 }
 
 func main() {
-	di.ConfigLoad(`{"name":"duck"}`, di.JSON)
+	_ = di.ConfigLoad(`{"name":"duck"}`, di.JSON)
 	//di.ConfigLoadFile("path", di.JSON)
 	//di.ConfigLoadReader(reader, di.JSON)
 	duck := Duck{}
