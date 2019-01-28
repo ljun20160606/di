@@ -169,5 +169,40 @@ func main() {
 
 	fmt.Println(duck.Name == "duck")
 }
+```
 
+还支持根据前缀映射配置，如下取前缀为`test.properties`内的配置映射到对应的`PrefixProperties`结构体中
+
+```go
+import (
+	"fmt"
+	"github.com/ljun20160606/di"
+)
+
+type Prefix struct {
+	// 如果希望使用相同的PrefixProperties可以写为*PrefixProperties
+	// 否则只会拷贝结构体本身
+	// 如果想映射整个配置可以写`di:"#.{}"`
+	Properties PrefixProperties `di:"#.{test.properties}"`
+}
+
+type PrefixProperties struct {
+	Type        string
+	Value       string
+	SnakeFormat string `yaml:"snake_format"`
+}
+
+func main() {
+    di.ConfigLoad(`
+test:
+  properties:
+    type: prefix
+    value: test
+    snake_format: snake`, YAML)
+
+    prefix := Prefix{}
+    di.Put(&prefix)
+
+    fmt.Println(prefix.Properties)
+}
 ```
