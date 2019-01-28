@@ -142,3 +142,10 @@ func TestBeforeInitPlugin(t *testing.T) {
 	ast.Equal(sex.BeforeInit(), duck.SexToo)
 	ast.Equal(duck.Sex, duck.SexToo)
 }
+
+func TestGetDefaultName(t *testing.T) {
+	ast := assert.New(t)
+	duck := Duck{}
+	defaultName := GetDefaultName(duck)
+	ast.Equal("di.Duck", defaultName)
+}

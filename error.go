@@ -10,6 +10,7 @@ const (
 	ErrorUnexported
 	ErrorTagDotIndex
 	ErrorStopIterator
+	ErrorUnserialize
 )
 
 var errorString = [...]string{
@@ -18,6 +19,7 @@ var errorString = [...]string{
 	ErrorUnexported:   "%v: %v %v %v 需要大写变量首字母 mustBeExported",
 	ErrorTagDotIndex:  "错误field: %v %v `%v`  %v",
 	ErrorStopIterator: "停止循环",
+	ErrorUnserialize:  "反序列化失败，类型可能有误",
 }
 
 func (e errorDi) String() string {

@@ -1,6 +1,7 @@
 package di
 
 import (
+	"github.com/ljun20160606/gox/reflectx"
 	"log"
 	"os"
 )
@@ -38,4 +39,8 @@ func Configure(configurators ...Configurator) Container {
 
 func Start() {
 	defaultContainer.Start()
+}
+
+func GetDefaultName(water Water) string {
+	return reflectx.GetInterfaceDefaultName(water)
 }

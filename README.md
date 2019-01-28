@@ -171,3 +171,31 @@ func main() {
 }
 
 ```
+
+还支持prefix取配置结构，如下取前缀为`test.properties`内的配置映射到对应的`PrefixProperties`结构体中
+
+```
+type Prefix struct {
+	Properties PrefixProperties `di:"#.{test.properties}"`
+}
+
+type PrefixProperties struct {
+	Type        string
+	Value       string
+	SnakeFormat string `yaml:"snake_format"`
+}
+
+func main() {
+    ConfigLoad(`
+test:
+  properties:
+    type: prefix
+    value: test
+    snake_format: snake`, YAML)
+
+    prefix := Prefix{}
+    Put(&prefix)
+
+    fmt.Println(prefix.Properties)
+}
+```
