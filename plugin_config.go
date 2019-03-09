@@ -91,9 +91,9 @@ func (d *diConfig) Load(path string, ice Ice) {
 		if water != nil {
 			if value.Kind() == reflect.Ptr {
 				value.Set(reflect.ValueOf(water))
-			} else {
-				value.Set(reflect.ValueOf(water).Elem())
+				return
 			}
+			value.Set(reflect.ValueOf(water).Elem())
 			return
 		}
 		prefix := path[1 : len(path)-1]
@@ -110,7 +110,8 @@ func (d *diConfig) Load(path string, ice Ice) {
 		}
 		var vv interface{}
 		if value.Kind() == reflect.Ptr {
-			vv = value.Interface()
+			vv = reflect.New(value.Type().Elem()).Interface()
+			value.Set(reflect.ValueOf(vv))
 		} else {
 			vv = value.Addr().Interface()
 		}
